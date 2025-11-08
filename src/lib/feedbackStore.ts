@@ -8,7 +8,9 @@ export interface Feedback {
   pinned: boolean;
 }
 
-let feedbackData: Feedback[] = [
+const FEEDBACKS_STORAGE_KEY = 'coastal_feedbacks';
+
+const defaultFeedbacks: Feedback[] = [
   {
     id: 1,
     name: "Sarah Johnson",
@@ -44,29 +46,39 @@ let feedbackData: Feedback[] = [
 ];
 
 export const getFeedbacks = (): Feedback[] => {
-  return [...feedbackData];
+  if (typeof window === 'undefined') return defaultFeedbacks;
+  
+  const stored = localStorage.getItem(FEEDBACKS_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : defaultFeedbacks;
 };
 
 export const getPinnedFeedbacks = (): Feedback[] => {
-  return feedbackData.filter(f => f.pinned).slice(0, 5);
+  const feedbacks = getFeedbacks();
+  return feedbacks.filter(f => f.pinned).slice(0, 5);
 };
 
 export const addFeedback = (feedback: Omit<Feedback, 'id' | 'date' | 'pinned'>): void => {
+  const feedbacks = getFeedbacks();
   const newFeedback: Feedback = {
     ...feedback,
-    id: Math.max(...feedbackData.map(f => f.id)) + 1,
+    id: feedbacks.length > 0 ? Math.max(...feedbacks.map(f => f.id)) + 1 : 1,
     date: new Date().toISOString().split('T')[0],
     pinned: false
   };
-  feedbackData.unshift(newFeedback);
+  const updatedFeedbacks = [newFeedback, ...feedbacks];
+  localStorage.setItem(FEEDBACKS_STORAGE_KEY, JSON.stringify(updatedFeedbacks));
 };
 
 export const toggleFeedbackPin = (id: number): void => {
-  feedbackData = feedbackData.map(feedback => 
+  const feedbacks = getFeedbacks();
+  const updatedFeedbacks = feedbacks.map(feedback => 
     feedback.id === id ? { ...feedback, pinned: !feedback.pinned } : feedback
   );
+  localStorage.setItem(FEEDBACKS_STORAGE_KEY, JSON.stringify(updatedFeedbacks));
 };
 
 export const deleteFeedback = (id: number): void => {
-  feedbackData = feedbackData.filter(feedback => feedback.id !== id);
+  const feedbacks = getFeedbacks();
+  const updatedFeedbacks = feedbacks.filter(feedback => feedback.id !== id);
+  localStorage.setItem(FEEDBACKS_STORAGE_KEY, JSON.stringify(updatedFeedbacks));
 };
