@@ -1,63 +1,25 @@
 import Header from "@/components/Header";
-import { ExternalLink, Github } from "lucide-react";
+import Footer from "@/components/Footer";
+import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { getWorks, type Work } from "@/lib/supabaseWorksStore";
 
 const OurWorks = () => {
-  const projects = [
-    {
-      title: "E-commerce Store",
-      description: "Modern online store with payment integration",
-      image: "/placeholder.svg",
-      tech: ["React", "Node.js", "Stripe"],
-      liveUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      title: "Restaurant Website",
-      description: "Beautiful restaurant site with online ordering",
-      image: "/placeholder.svg",
-      tech: ["React", "Tailwind", "Firebase"],
-      liveUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      title: "Business Portfolio",
-      description: "Professional portfolio for consulting firm",
-      image: "/placeholder.svg",
-      tech: ["React", "TypeScript", "Framer"],
-      liveUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      title: "SaaS Dashboard",
-      description: "Analytics dashboard for SaaS platform",
-      image: "/placeholder.svg",
-      tech: ["React", "Chart.js", "API"],
-      liveUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      title: "Real Estate Site",
-      description: "Property listing website with search",
-      image: "/placeholder.svg",
-      tech: ["React", "Maps API", "Database"],
-      liveUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      title: "Blog Platform",
-      description: "Content management system for bloggers",
-      image: "/placeholder.svg",
-      tech: ["React", "CMS", "SEO"],
-      liveUrl: "#",
-      githubUrl: "#"
-    }
-  ];
+  const [projects, setProjects] = useState<Work[]>([]);
+
+  useEffect(() => {
+    const loadWorks = async () => {
+      const worksData = await getWorks();
+      setProjects(worksData);
+    };
+    loadWorks();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header />
-      <div className="pt-20">
+      <div className="pt-20 flex-1">
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
@@ -78,7 +40,7 @@ const OurWorks = () => {
                 >
                   <div className="aspect-video bg-muted flex items-center justify-center">
                     <img 
-                      src={project.image} 
+                      src={project.image_url} 
                       alt={project.title}
                       className="w-full h-full object-cover"
                     />
@@ -99,14 +61,12 @@ const OurWorks = () => {
                       ))}
                     </div>
 
-                    <div className="flex gap-2">
-                      <Button size="sm" variant="outline" className="flex-1">
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Live Site
-                      </Button>
-                      <Button size="sm" variant="outline" className="flex-1">
-                        <Github className="w-4 h-4 mr-2" />
-                        Code
+                    <div className="flex justify-center">
+                      <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
+                        <a href={project.live_url} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Live Site
+                        </a>
                       </Button>
                     </div>
                   </div>
@@ -116,6 +76,7 @@ const OurWorks = () => {
           </div>
         </section>
       </div>
+      <Footer />
     </div>
   );
 };

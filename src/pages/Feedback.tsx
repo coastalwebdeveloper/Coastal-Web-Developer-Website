@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import FeedbackForm from "@/components/FeedbackForm";
 import { Star } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -12,9 +13,9 @@ const Feedback = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header />
-      <div className="pt-20">
+      <div className="pt-20 flex-1">
         <FeedbackForm />
         
         <section className="py-20 bg-muted/50">
@@ -56,6 +57,7 @@ const Feedback = () => {
           </div>
         </section>
       </div>
+      <Footer />
     </div>
   );
 };

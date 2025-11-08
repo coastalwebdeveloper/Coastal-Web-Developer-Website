@@ -66,3 +66,7 @@ export const toggleFeedbackPin = (id: number): void => {
     feedback.id === id ? { ...feedback, pinned: !feedback.pinned } : feedback
   );
 };
+
+export const deleteFeedback = (id: number): void => {
+  feedbackData = feedbackData.filter(feedback => feedback.id !== id);
+};
