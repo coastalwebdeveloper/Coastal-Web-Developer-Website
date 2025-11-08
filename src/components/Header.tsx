@@ -9,18 +9,18 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border animate-fade-in">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 animate-scale-in">
+          <Link to="/" className="flex items-center gap-1 sm:gap-2 animate-scale-in">
             <img 
               src="/CWD_logo.png" 
               alt="Coastal Web Developers" 
-              className="h-8 w-auto"
+              className="h-7 sm:h-8 w-auto flex-shrink-0"
             />
-            <div className="text-base sm:text-lg font-bold">
+            <div className="text-sm sm:text-base md:text-lg font-bold whitespace-nowrap">
               <span className="text-foreground">Coastal</span>
-              <span className="text-primary">WebDevelopers</span>
+              <span className="text-primary">WebDev</span>
             </div>
           </Link>
 
@@ -77,8 +77,8 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-border">
-            <nav className="flex flex-col gap-4 pt-4">
+          <div className="md:hidden mt-3 pb-3 border-t border-border animate-fade-in">
+            <nav className="flex flex-col gap-3 pt-3">
               <Link 
                 to="/" 
                 className={`font-medium hover:text-primary/80 transition-colors ${
@@ -106,7 +106,7 @@ const Header = () => {
               >
                 Our Works
               </Link>
-              <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/contact" onClick={() => setIsMenuOpen(false)} className="mt-2">
                 <Button 
                   size="sm"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-md px-6 font-semibold w-full"
