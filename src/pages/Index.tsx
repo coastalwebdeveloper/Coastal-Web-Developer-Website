@@ -1,13 +1,21 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import Stats from "@/components/Stats";
+import AffordableExcellence from "@/components/AffordableExcellence";
+import OurServices from "@/components/OurServices";
+import DesignTools from "@/components/DesignTools";
+import Testimonials from "@/components/Testimonials";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <Hero />
-      <WhatsAppButton />
+      <Stats />
+      <AffordableExcellence />
+      <OurServices />
+      <DesignTools />
+      <Testimonials />
     </div>
   );
 };
