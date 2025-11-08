@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Star, Pin, PinOff, LogOut, Plus, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getFeedbacks, toggleFeedbackPin, deleteFeedback, type Feedback } from "@/lib/feedbackStore";
+import { getFeedbacks, toggleFeedbackPin, deleteFeedback, type Feedback } from "@/lib/supabaseFeedbackStore";
 import { getWorks, addWork, removeWork, uploadWorkImage, type Work } from "@/lib/supabaseWorksStore";
 
 const Admin = () => {
@@ -27,10 +27,21 @@ const Admin = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      setFeedbacks(getFeedbacks());
+      loadFeedbacks();
       loadWorks();
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (isLoggedIn && activeSection === 'feedback') {
+      loadFeedbacks();
+    }
+  }, [activeSection, isLoggedIn]);
+
+  const loadFeedbacks = async () => {
+    const feedbackData = await getFeedbacks();
+    setFeedbacks(feedbackData);
+  };
 
   const loadWorks = async () => {
     setLoading(true);
@@ -39,14 +50,18 @@ const Admin = () => {
     setLoading(false);
   };
 
-  const togglePin = (id: number) => {
-    toggleFeedbackPin(id);
-    setFeedbacks(getFeedbacks());
+  const togglePin = async (id: number) => {
+    const success = await toggleFeedbackPin(id);
+    if (success) {
+      await loadFeedbacks();
+    }
   };
 
-  const handleDeleteFeedback = (id: number) => {
-    deleteFeedback(id);
-    setFeedbacks(getFeedbacks());
+  const handleDeleteFeedback = async (id: number) => {
+    const success = await deleteFeedback(id);
+    if (success) {
+      await loadFeedbacks();
+    }
   };
 
   const handleLogout = () => {

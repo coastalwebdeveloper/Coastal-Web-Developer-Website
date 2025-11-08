@@ -2,13 +2,17 @@ import { Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getPinnedFeedbacks, type Feedback } from "@/lib/feedbackStore";
+import { getPinnedFeedbacks, type Feedback } from "@/lib/supabaseFeedbackStore";
 
 const Testimonials = () => {
   const [pinnedTestimonials, setPinnedTestimonials] = useState<Feedback[]>([]);
 
   useEffect(() => {
-    setPinnedTestimonials(getPinnedFeedbacks());
+    const loadPinnedFeedbacks = async () => {
+      const pinnedData = await getPinnedFeedbacks();
+      setPinnedTestimonials(pinnedData);
+    };
+    loadPinnedFeedbacks();
   }, []);
 
   return (

@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Star } from "lucide-react";
 import { useState } from "react";
-import { addFeedback } from "@/lib/feedbackStore";
+import { addFeedback } from "@/lib/supabaseFeedbackStore";
 
 const FeedbackForm = () => {
   const [rating, setRating] = useState(0);
@@ -13,17 +13,19 @@ const FeedbackForm = () => {
   const [feedback, setFeedback] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (name && feedback && rating > 0) {
-      addFeedback({ name, email, rating, feedback });
-      setSubmitted(true);
-      // Reset form
-      setName("");
-      setEmail("");
-      setFeedback("");
-      setRating(0);
-      setTimeout(() => setSubmitted(false), 3000);
+      const success = await addFeedback({ name, email, rating, feedback });
+      if (success) {
+        setSubmitted(true);
+        // Reset form
+        setName("");
+        setEmail("");
+        setFeedback("");
+        setRating(0);
+        setTimeout(() => setSubmitted(false), 3000);
+      }
     }
   };
 

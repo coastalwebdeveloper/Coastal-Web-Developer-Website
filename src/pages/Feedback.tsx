@@ -3,13 +3,17 @@ import Footer from "@/components/Footer";
 import FeedbackForm from "@/components/FeedbackForm";
 import { Star } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getFeedbacks, type Feedback } from "@/lib/feedbackStore";
+import { getFeedbacks, type Feedback } from "@/lib/supabaseFeedbackStore";
 
 const Feedback = () => {
   const [allFeedbacks, setAllFeedbacks] = useState<Feedback[]>([]);
 
   useEffect(() => {
-    setAllFeedbacks(getFeedbacks());
+    const loadFeedbacks = async () => {
+      const feedbackData = await getFeedbacks();
+      setAllFeedbacks(feedbackData);
+    };
+    loadFeedbacks();
   }, []);
 
   return (
