@@ -18,7 +18,7 @@ const Header = () => {
               alt="Coastal Web Developers" 
               className="h-8 w-auto"
             />
-            <div className="text-lg font-bold hidden sm:block">
+            <div className="text-base sm:text-lg font-bold">
               <span className="text-foreground">Coastal</span>
               <span className="text-primary">WebDevelopers</span>
             </div>
